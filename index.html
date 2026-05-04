@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThunderBolt — Gift Code Redemption</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060a0a;
+    --bg2: #0a1212;
+    --bg3: #0f1a1a;
+    --card: #0c1515;
+    --card2: #112020;
+    --border: rgba(40,90,72,0.15);
+    --border2: rgba(40,90,72,0.3);
+    --accent: #1e3d30;
+    --accent2: #285A48;
+    --accent3: #4a9470;
+    --gold: #f59e0b;
+    --gold2: #fbbf24;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #e0f2f1;
+    --text2: #99b8b5;
+    --text3: #4a6e6b;
+    --glow: 0 0 40px rgba(40,90,72,0.15);
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 10%, rgba(40,90,72,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(40,90,72,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 90% 5%, rgba(74,148,112,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 30% at 5% 90%, rgba(40,90,72,0.09) 0%, transparent 50%),
+      linear-gradient(135deg, #060a0a 0%, #091414 30%, #060d0d 60%, #080808 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient bg blobs */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: -15%;
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(ellipse, rgba(40,90,72,0.11) 0%, rgba(74,148,112,0.04) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: driftA 18s ease-in-out infinite alternate;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -25%;
+    right: -15%;
+    width: 65%;
+    height: 65%;
+    background: radial-gradient(ellipse, rgba(40,90,72,0.09) 0%, rgba(255,255,255,0.02) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: driftB 22s ease-in-out infinite alternate;
+  }
+  @keyframes driftA {
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(4%,3%) scale(1.06); }
+  }
+  @keyframes driftB {
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(-3%,-4%) scale(1.08); }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .nav-logo span { color: var(--accent2); }
+
+  .nav-logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text2);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: color 0.2s cubic-bezier(0.22,1,0.36,1),
+                background 0.2s cubic-bezier(0.22,1,0.36,1),
+                transform 0.18s cubic-bezier(0.22,1,0.36,1);
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    letter-spacing: 0.01em;
+  }
+  .nav-link:hover { color: var(--text); background: rgba(40,90,72,0.12); transform: translateY(-1px); }
+  .nav-link.active { color: var(--accent3); background: rgba(40,90,72,0.12); }
+
+  .nav-btn {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #fff;
+    padding: 7px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    font-family: var(--font-body);
+    letter-spacing: 0.01em;
+  }
+  .nav-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .nav-btn:active { transform: scale(0.96); opacity: 0.9; }
+
+  /* PAGES */
+  .page {
+    display: none;
+    padding-top: 80px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .page.active {
+    display: block;
+  }
+  .page.page-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* CONTAINER */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--accent3);
+    background: rgba(40,90,72,0.12);
+    border: 1px solid rgba(40,90,72,0.25);
+    padding: 5px 14px;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: '◆'; font-size: 8px; }
+
+  .hero h1 {
+    font-family: var(--font-head);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.2rem;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text2);
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(40,90,72,0.3); }
+  .btn-primary:active { transform: translateY(0) scale(0.97); box-shadow: none; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    padding: 12px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border2);
+    font-family: var(--font-body);
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-secondary:hover { background: rgba(40,90,72,0.08); border-color: var(--accent); }
+
+  /* CARDS GRID */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.25s cubic-bezier(0.22,1,0.36,1),
+                transform 0.3s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.3s cubic-bezier(0.22,1,0.36,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .product-card.robux::before { background: linear-gradient(90deg, #10b981, #34d399); }
+  .product-card.robux50::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .product-card.minecraft::before { background: linear-gradient(90deg, #1e3d30, #285A48); }
+  .product-card.mc-account::before { background: linear-gradient(90deg, #ef4444, #f97316); }
+  .product-card:hover { border-color: var(--border2); transform: translateY(-5px) scale(1.01); box-shadow: var(--glow), 0 12px 40px rgba(0,0,0,0.3); }
+  .product-card:hover::before { opacity: 1; }
+  .product-card:active { transform: translateY(-2px) scale(0.99); }
+
+  .product-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 1rem;
+  }
+  .product-icon.green { background: rgba(16,185,129,0.12); }
+  .product-icon.gold { background: rgba(245,158,11,0.12); }
+  .product-icon.purple { background: rgba(40,90,72,0.12); }
+  .product-icon.red { background: rgba(239,68,68,0.12); }
+
+  .product-card h3 {
+    font-family: var(--font-head);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .product-card p {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  .product-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tag-green { background: rgba(16,185,129,0.12); color: #34d399; }
+  .tag-gold { background: rgba(245,158,11,0.12); color: #fbbf24; }
+  .tag-purple { background: rgba(40,90,72,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(239,68,68,0.1); color: #f87171; }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 3rem 0;
+  }
+  .stat-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+  }
+  .stat-item .num {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-item .label {
+    font-size: 0.8rem;
+    color: var(--text2);
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+  }
+
+  /* HOW IT WORKS */
+  .section-title {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .section-sub { color: var(--text2); font-size: 0.9rem; margin-bottom: 2rem; }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem;
+  }
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent2);
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+  .step-card h4 {
+    font-family: var(--font-head);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .step-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.5; }
+
+  /* FORMS & MODALS */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(40,90,72,0.1);
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0;
+  }
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 30px; height: 30px;
+    background: rgba(255,255,255,0.05);
+    border: none;
+    border-radius: 8px;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+
+  .modal h2 {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.02em;
+  }
+  .modal .modal-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 1.5rem; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.25s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.25s cubic-bezier(0.22,1,0.36,1),
+                background 0.25s cubic-bezier(0.22,1,0.36,1);
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent2);
+    background: rgba(255,255,255,0.07);
+    box-shadow: 0 0 0 3px rgba(40,90,72,0.12);
+  }
+  select { appearance: none; cursor: pointer; }
+  select option { background: var(--bg2); }
+
+  .form-row { margin-bottom: 1rem; }
+  .form-row label { margin-bottom: 0.4rem; }
+  .form-row input, .form-row select { margin-bottom: 0; }
+
+  .btn-full {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-head);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s cubic-bezier(0.22,1,0.36,1),
+                transform 0.2s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.2s cubic-bezier(0.22,1,0.36,1);
+    letter-spacing: 0.02em;
+  }
+  .btn-full:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(40,90,72,0.25); }
+  .btn-full:active { transform: scale(0.97); opacity: 1; box-shadow: none; }
+  .btn-full:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ALERTS */
+  .alert {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.83rem;
+    margin-bottom: 1rem;
+    display: none;
+    line-height: 1.4;
+  }
+  .alert.show { display: block; }
+  .alert.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #f87171; }
+  .alert.success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #34d399; }
+  .alert.info { background: rgba(40,90,72,0.1); border: 1px solid rgba(40,90,72,0.25); color: var(--accent3); }
+
+  /* REDEEM PAGE */
+  .redeem-hero {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+  }
+  .redeem-hero h1 {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .redeem-hero p { color: var(--text2); font-size: 0.95rem; }
+
+  .redeem-form-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--glow);
+  }
+
+  /* ORDERS */
+  .orders-section { max-width: 800px; margin: 0 auto; }
+  .order-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .order-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .order-info { flex: 1; }
+  .order-info h4 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+  .order-info p { font-size: 0.78rem; color: var(--text2); font-family: var(--font-mono); }
+  .order-status {
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    padding: 4px 12px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .status-pending { background: rgba(245,158,11,0.12); color: #fbbf24; }
+  .status-active { background: rgba(16,185,129,0.12); color: #34d399; }
+
+  /* SUPPORT PAGE */
+  .support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .support-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  .support-card h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .support-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+
+  .faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: rgba(40,90,72,0.06); }
+  .faq-q .arrow { transition: transform 0.2s; color: var(--accent2); }
+  .faq-item.open .faq-q .arrow { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 1.2rem;
+    font-size: 0.83rem;
+    color: var(--text2);
+    line-height: 1.6;
+    border-top: 0px solid var(--border);
+    transition: max-height 0.4s cubic-bezier(0.22,1,0.36,1),
+                padding 0.3s cubic-bezier(0.22,1,0.36,1),
+                border-top-width 0.2s;
+  }
+  .faq-item.open .faq-a {
+    max-height: 300px;
+    padding: 0 1.2rem 1rem;
+    border-top-width: 1px;
+  }
+
+  /* ADMIN PAGE */
+  .admin-wrap { max-width: 900px; margin: 0 auto; }
+  .admin-header {
+    background: linear-gradient(135deg, rgba(40,90,72,0.15), rgba(40,90,72,0.08));
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .admin-header h2 { font-family: var(--font-head); font-size: 1.3rem; font-weight: 800; }
+  .admin-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--accent3);
+    background: rgba(40,90,72,0.2);
+    border: 1px solid rgba(40,90,72,0.3);
+    padding: 4px 12px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .admin-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.4rem;
+  }
+  .admin-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--text2);
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: var(--font-body);
+  }
+  .admin-tab:hover { color: var(--text); }
+  .admin-tab.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+
+  .code-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  .code-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(40,90,72,0.06);
+    color: var(--text2);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+  .code-table tr:last-child td { border-bottom: none; }
+  .code-table .code-val { color: var(--accent3); }
+
+  .delete-btn {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: #f87171;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all 0.2s;
+  }
+  .delete-btn:hover { background: rgba(239,68,68,0.2); }
+
+  .activate-btn {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: #34d399;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all 0.2s;
+    margin-right: 4px;
+  }
+  .activate-btn:hover { background: rgba(16,185,129,0.2); }
+
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .add-code-form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* PROFILE SECTION */
+  .profile-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .profile-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .profile-avatar {
+    width: 60px; height: 60px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .profile-name { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; }
+  .profile-email { font-size: 0.82rem; color: var(--text2); font-family: var(--font-mono); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--card2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+    z-index: 999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 320px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: rgba(16,185,129,0.4); }
+  .toast.error { border-color: rgba(239,68,68,0.4); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text3);
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    margin-top: 4rem;
+  }
+
+  /* SEPARATOR */
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 3rem 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text3);
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .container { padding: 1rem; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .admin-tabs { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL LOADER -->
+<div id="globalLoader" style="
+  position:fixed;inset:0;z-index:9998;
+  background:rgba(6,10,10,0.92);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1rem;
+  backdrop-filter:blur(8px);
+">
+  <div style="
+    width:40px;height:40px;
+    border-radius:50%;
+    border:3px solid rgba(40,90,72,0.2);
+    border-top-color:var(--accent2);
+    animation:spin 0.8s linear infinite;
+  "></div>
+  <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text2);letter-spacing:0.06em;">Loading ThunderBolt&hellip;</p>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon">⚡</div>
+    Thunder<span>Bolt</span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('redeem')">Redeem</button>
+    <button class="nav-link" onclick="showPage('orders')">My Orders</button>
+    <button class="nav-link" onclick="showPage('support')">Support</button>
+    <button class="nav-link" id="adminNavLink" style="display:none" onclick="showPage('admin')">Admin</button>
+    <button class="nav-btn" id="loginNavBtn" onclick="openModal('loginModal')">Sign In</button>
+    <button class="nav-btn" id="logoutNavBtn" style="display:none" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+  <div style="text-align:center; padding: 5rem 2rem 3rem;">
+    <div class="hero-badge">Instant Code Redemption Platform</div>
+    <h1 style="font-family:var(--font-head);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1.2rem;">
+      Your Gateway to<br><em style="font-style:normal;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Premium Codes</em>
+    </h1>
+    <p style="font-size:1.05rem;color:var(--text2);max-width:480px;margin:0 auto 2.5rem;line-height:1.7;">
+      Redeem gift cards and game codes instantly. Your codes are delivered to your inbox within 80 hours of activation.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="showPage('redeem')">↗ Redeem a Code</button>
+      <button class="btn-secondary" onclick="showPage('support')">How It Works</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="products-grid">
+      <div class="product-card robux50" onclick="showPage('redeem')">
+        <div class="product-icon green">💎</div>
+        <h3>$50 Robux Gift Card</h3>
+        <p>Premium Robux balance for your Roblox account</p>
+        <span class="product-tag tag-green">$50 Value</span>
+      </div>
+      <div class="product-card robux" onclick="showPage('redeem')">
+        <div class="product-icon gold">👑</div>
+        <h3>$100 Robux Gift Card</h3>
+        <p>Double the Robux for power players</p>
+        <span class="product-tag tag-gold">$100 Value</span>
+      </div>
+      <div class="product-card minecraft" onclick="showPage('redeem')">
+        <div class="product-icon purple">⛏️</div>
+        <h3>Minecraft Redeem Code</h3>
+        <p>Official Minecraft game redemption code</p>
+        <span class="product-tag tag-purple">Game Code</span>
+      </div>
+      <div class="product-card mc-account" onclick="showPage('redeem')">
+        <div class="product-icon red">🏆</div>
+        <h3>Minecraft Permanent Account</h3>
+        <p>Full Minecraft account — yours forever</p>
+        <span class="product-tag tag-red">Premium Account</span>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="num" id="statRedeemed">0</div>
+        <div class="label">Codes Redeemed</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">4</div>
+        <div class="label">Product Types</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">80h</div>
+        <div class="label">Activation Window</div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="margin-bottom:1.5rem;">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Simple 3-step process to get your code</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">STEP 01</div>
+        <h4>Create Account</h4>
+        <p>Sign up with your email and password to get started.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 02</div>
+        <h4>Enter Your Code</h4>
+        <p>Enter the redemption code you have received on the Redeem page.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 03</div>
+        <h4>Wait 80 Hours</h4>
+        <p>Your gift code will be sent to your email within 80 hours of redemption.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 04</div>
+        <h4>Activated!</h4>
+        <p>Once sent, your order status updates to Activated. Check your inbox.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2026 ThunderBolt — All rights reserved · elyasgoated@gmail.com</footer>
+</div>
+
+<!-- ===== REDEEM PAGE ===== -->
+<div class="page" id="page-redeem">
+  <div class="redeem-hero">
+    <div class="hero-badge">Code Redemption</div>
+    <h1 style="font-family:var(--font-head);font-size:2.5rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem;">Redeem Your Code</h1>
+    <p style="color:var(--text2);font-size:0.92rem;">Enter your code below. Your gift will be delivered via email within 80 hours.</p>
+  </div>
+  <div class="container">
+    <div class="redeem-form-wrap">
+      <div id="redeemLoginGate" style="text-align:center;padding:2rem 0;">
+        <div style="font-size:2rem;margin-bottom:1rem;">🔐</div>
+        <h3 style="font-family:var(--font-head);font-weight:700;margin-bottom:0.5rem;">Sign In Required</h3>
+        <p style="color:var(--text2);font-size:0.85rem;margin-bottom:1.5rem;">You need to be signed in to redeem a code.</p>
+        <button class="btn-primary" onclick="openModal('loginModal')">Sign In</button>
+        <div style="margin-top:1rem;">
+          <span style="color:var(--text2);font-size:0.82rem;">No account? </span>
+          <button style="background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.82rem;font-family:var(--font-body);" onclick="openModal('registerModal')">Create one</button>
+        </div>
+      </div>
+
+      <div id="redeemFormSection" style="display:none;">
+        <h2 style="font-family:var(--font-head);font-weight:800;margin-bottom:0.3rem;font-size:1.2rem;">Enter Redemption Code</h2>
+        <p class="modal-sub">Make sure your code matches one of our supported products.</p>
+
+        <div id="redeemAlert" class="alert"></div>
+
+        <div class="form-row">
+          <label>Your Email</label>
+          <input type="email" id="redeemEmail" placeholder="where to send your code" readonly />
+        </div>
+        <div class="form-row">
+          <label>Redemption Code</label>
+          <input type="text" id="redeemCode" placeholder="e.g. RBX-XXXX-XXXX-XXXX" style="font-family:var(--font-mono);letter-spacing:0.05em;" />
+        </div>
+
+        <button class="btn-full" onclick="submitRedeem()">↗ Submit Redemption</button>
+        <p style="text-align:center;font-size:0.75rem;color:var(--text3);margin-top:1rem;font-family:var(--font-mono);">
+          Code activation takes up to 80 hours. You will receive an email when it's ready.
+        </p>
+      </div>
+    </div>
+  </div>
+  <footer>© 2026 ThunderBolt — All rights reserved</footer>
+</div>
+
+<!-- ===== MY ORDERS PAGE ===== -->
+<div class="page" id="page-orders">
+  <div class="container">
+    <div style="margin-bottom:2rem;">
+      <h1 style="font-family:var(--font-head);font-size:2rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.3rem;">My Orders</h1>
+      <p style="color:var(--text2);font-size:0.88rem;">Track the status of your redemptions</p>
+    </div>
+
+    <div id="ordersLoginGate" style="text-align:center;padding:4rem 0;">
+      <div style="font-size:2rem;margin-bottom:1rem;">📦</div>
+      <h3 style="font-family:var(--font-head);font-weight:700;margin-bottom:0.5rem;">Sign In to View Orders</h3>
+      <p style="color:var(--text2);font-size:0.85rem;margin-bottom:1.5rem;">Your order history is tied to your account.</p>
+      <button class="btn-primary" onclick="openModal('loginModal')">Sign In</button>
+    </div>
+
+    <div id="ordersSection" style="display:none;">
+      <div id="ordersList"></div>
+    </div>
+  </div>
+  <footer>© 2026 ThunderBolt — All rights reserved</footer>
+</div>
+
+<!-- ===== SUPPORT PAGE ===== -->
+<div class="page" id="page-support">
+  <div class="container">
+    <div style="margin-bottom:2rem;padding-top:1rem;">
+      <div class="hero-badge" style="display:inline-flex;margin-bottom:1rem;">Help Center</div>
+      <h1 style="font-family:var(--font-head);font-size:2.5rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem;">Support</h1>
+      <p style="color:var(--text2);">Everything you need to know about ThunderBolt</p>
+    </div>
+
+    <div class="support-grid">
+      <div class="support-card">
+        <h3>📧 Email Support</h3>
+        <p>Reach us at <span style="color:var(--accent3);font-family:var(--font-mono);">elyasgoated@gmail.com</span> for any issues with your redemption or account.</p>
+      </div>
+      <div class="support-card">
+        <h3>⏱ 80-Hour Activation</h3>
+        <p>After you submit a code, allow up to 80 hours for us to verify and send your gift code to your registered email.</p>
+      </div>
+      <div class="support-card">
+        <h3>🔄 Code Policy</h3>
+        <p>Redemption codes must match our supported products. Codes that have been previously used can be re-redeemed per our policy.</p>
+      </div>
+    </div>
+
+    <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;margin-bottom:1.2rem;letter-spacing:-0.01em;">Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How long does activation take?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Activation takes up to 80 hours. Once activated, you'll receive your gift code directly to the email you used during redemption. Your order status will also update to "Activated."</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What products can I redeem?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">We currently support: $50 Robux Gift Cards, $100 Robux Gift Cards, Minecraft Redeem Codes, and Minecraft Permanent Accounts.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I redeem a code that was previously used?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Yes! Per our platform policy, previously redeemed codes can be redeemed again. However, each account must wait for their activation window before reusing a code.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What email will the code be sent to?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Your gift code will be sent to the email address linked to your ThunderBolt account. Make sure it's correct when you sign up.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What if I don't receive my code after 80 hours?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Please contact us at elyasgoated@gmail.com with your order ID. We'll look into it and resolve it promptly.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Is my data secure?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Your account data is stored locally and we only use your email for code delivery purposes. We never share your data with third parties.</div>
+    </div>
+  </div>
+  <footer>© 2026 ThunderBolt — All rights reserved</footer>
+</div>
+
+<!-- ===== ADMIN PAGE ===== -->
+<div class="page" id="page-admin">
+  <div class="container">
+    <div class="admin-wrap">
+      <div class="admin-header">
+        <div>
+          <h2>Admin Dashboard</h2>
+          <p style="color:var(--text2);font-size:0.82rem;margin-top:3px;font-family:var(--font-mono);">tejisajet@gmail.com</p>
+        </div>
+        <span class="admin-badge">◆ Admin Access</span>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('codes')">Manage Codes</button>
+        <button class="admin-tab" onclick="switchAdminTab('redemptions')">Redemptions</button>
+        <button class="admin-tab" onclick="switchAdminTab('users')">Users</button>
+      </div>
+
+      <!-- CODES TAB -->
+      <div class="admin-panel active" id="admin-codes">
+        <div class="add-code-form">
+          <h3 style="font-family:var(--font-head);font-weight:700;margin-bottom:1.2rem;font-size:1rem;">Add New Code</h3>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Code Value</label>
+              <input type="text" id="newCodeVal" placeholder="e.g. RBX-1234-ABCD-5678" style="font-family:var(--font-mono);" />
+            </div>
+            <div class="form-row">
+              <label>Product Type</label>
+              <select id="newCodeType">
+                <option value="">Select type...</option>
+                <option value="robux50">$50 Robux Gift Card</option>
+                <option value="robux100">$100 Robux Gift Card</option>
+                <option value="minecraft_code">Minecraft Redeem Code</option>
+                <option value="minecraft_account">Minecraft Permanent Account</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="adminAddCode()" style="font-size:0.85rem;padding:9px 20px;">+ Add Code</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="code-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminCodesTable">
+              <tr><td colspan="4" class="empty-state">No codes added yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REDEMPTIONS TAB -->
+      <div class="admin-panel" id="admin-redemptions">
+        <div class="table-wrap">
+          <table class="code-table">
+            <thead>
+              <tr>
+                <th>User Email</th>
+                <th>Code</th>
+                <th>Product</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminRedemptionsTable">
+              <tr><td colspan="6" class="empty-state">No redemptions yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- USERS TAB -->
+      <div class="admin-panel" id="admin-users">
+        <div class="table-wrap">
+          <table class="code-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Joined</th>
+                <th>Redemptions</th>
+              </tr>
+            </thead>
+            <tbody id="adminUsersTable">
+              <tr><td colspan="3" class="empty-state">No users yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>© 2026 ThunderBolt — Admin Panel</footer>
+</div>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <h2>Sign In</h2>
+    <p class="modal-sub">Welcome back to ThunderBolt</p>
+    <div id="loginAlert" class="alert"></div>
+    <div class="form-row">
+      <label>Email Address</label>
+      <input type="email" id="loginEmail" placeholder="your@email.com" />
+    </div>
+    <div class="form-row">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" />
+    </div>
+    <button class="btn-full" onclick="doLogin()">Sign In →</button>
+    <div style="text-align:center;margin-top:1.2rem;">
+      <span style="color:var(--text2);font-size:0.82rem;">No account? </span>
+      <button style="background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.82rem;font-family:var(--font-body);" onclick="switchModal('loginModal','registerModal')">Create one</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REGISTER MODAL ===== -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    <h2>Create Account</h2>
+    <p class="modal-sub">Join ThunderBolt to redeem your codes</p>
+    <div id="registerAlert" class="alert"></div>
+    <div class="form-row">
+      <label>Email Address</label>
+      <input type="email" id="regEmail" placeholder="your@email.com" />
+    </div>
+    <div class="form-row">
+      <label>Password</label>
+      <input type="password" id="regPassword" placeholder="min 6 characters" />
+    </div>
+    <div class="form-row">
+      <label>Confirm Password</label>
+      <input type="password" id="regPassword2" placeholder="repeat password" />
+    </div>
+    <button class="btn-full" onclick="doRegister()">Create Account →</button>
+    <div style="text-align:center;margin-top:1.2rem;">
+      <span style="color:var(--text2);font-size:0.82rem;">Already have an account? </span>
+      <button style="background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.82rem;font-family:var(--font-body);" onclick="switchModal('registerModal','loginModal')">Sign in</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA LAYER (Persistent Cross-Device Storage) ────────────────────────────
+
+const ADMIN_EMAIL = 'tejisajet@gmail.com';
+
+// In-memory cache so reads are instant after first load
+let _cache = { users: null, codes: null, redemptions: null };
+
+// ── Shared storage helpers (shared=true → visible across all devices/sessions) ──
+async function storageGet(key, def, shared=false) {
+  try {
+    const r = await window.storage.get(key, shared);
+    return r ? JSON.parse(r.value) : def;
+  } catch { return def; }
+}
+async function storageSet(key, val, shared=false) {
+  try { await window.storage.set(key, JSON.stringify(val), shared); } catch {}
+}
+
+// ── Local session (per-browser, not shared) ──
+function getSession() {
+  try { return JSON.parse(localStorage.getItem('rv_session')) || null; }
+  catch { return null; }
+}
+function setSession(s) {
+  localStorage.setItem('rv_session', JSON.stringify(s));
+}
+
+// ── Async getters/setters with in-memory cache ──
+async function getUsers() {
+  if (_cache.users === null) _cache.users = await storageGet('rv_users', {}, true);
+  return _cache.users;
+}
+async function setUsers(u) {
+  _cache.users = u;
+  await storageSet('rv_users', u, true);
+}
+async function getCodes() {
+  if (_cache.codes === null) _cache.codes = await storageGet('rv_codes', [], true);
+  return _cache.codes;
+}
+async function setCodes(c) {
+  _cache.codes = c;
+  await storageSet('rv_codes', c, true);
+}
+async function getRedemptions() {
+  if (_cache.redemptions === null) _cache.redemptions = await storageGet('rv_redemptions', [], true);
+  return _cache.redemptions;
+}
+async function setRedemptions(r) {
+  _cache.redemptions = r;
+  await storageSet('rv_redemptions', r, true);
+}
+
+let currentUser = getSession();
+
+// ── Boot: load all shared data into cache on page load ──
+const SEED_CODES = [
+  // $50 Robux Gift Card
+  {code:'A7F2-K9Q1-ZX8M-4TWR',type:'robux50'},{code:'J3KD-9LQW-2XCV-B7NM',type:'robux50'},
+  {code:'P8ZX-1QWE-R4TY-U9IO',type:'robux50'},{code:'L0MN-3KJF-H8GD-S2AQ',type:'robux50'},
+  {code:'X9WE-7TYU-4IOP-Z6XC',type:'robux50'},{code:'M2NB-8VCX-1ASD-F7GH',type:'robux50'},
+  {code:'Q4WE-6RTY-9UIO-P1LK',type:'robux50'},{code:'Z8XC-2VBN-5MAS-D7FG',type:'robux50'},
+  {code:'H3JK-9LPO-4IUY-T1RE',type:'robux50'},{code:'S7DF-2GHJ-8KLP-Q4WE',type:'robux50'},
+  {code:'R5TY-1UIO-9PAS-3DFG',type:'robux50'},{code:'C8VB-6NMJ-2KLP-7HGF',type:'robux50'},
+  {code:'T1RE-4WQA-8ZXC-9VBN',type:'robux50'},{code:'G7HJ-3KLM-1NOP-6QRS',type:'robux50'},
+  {code:'U2IO-9PAS-4DFG-8HJK',type:'robux50'},{code:'V6BN-2MAS-7DFG-1HJK',type:'robux50'},
+  {code:'N9MJ-5KLP-3QWE-8RTY',type:'robux50'},{code:'Y4UI-7OPL-1KJM-9NHG',type:'robux50'},
+  {code:'F2GH-8JKL-6POI-3TRE',type:'robux50'},{code:'D1SA-9QWE-4RTY-7UIO',type:'robux50'},
+  {code:'B3NM-8VCX-2ZAS-6DFG',type:'robux50'},{code:'K7LP-1QWE-9RTY-4UIO',type:'robux50'},
+  {code:'W5ER-3TYU-8IOP-2ASD',type:'robux50'},{code:'E9RT-6YUI-1OPL-7KJM',type:'robux50'},
+  {code:'O2PL-8KJM-4NHG-9BVC',type:'robux50'},
+  // $100 Robux Gift Card
+  {code:'I6OP-3KJM-7NHG-1BVC',type:'robux100'},{code:'A4SD-9FGH-2JKL-6QWE',type:'robux100'},
+  {code:'Z1XC-7VBN-3MAS-8DFG',type:'robux100'},{code:'L8KJ-2HGF-5DSA-9QWE',type:'robux100'},
+  {code:'P3OI-7UYT-1REW-6QAS',type:'robux100'},{code:'M6NB-4VCX-9ZAS-2DFG',type:'robux100'},
+  {code:'Q1WE-8RTY-5UIO-3PAS',type:'robux100'},{code:'S9DF-2GHJ-7KLP-4QWE',type:'robux100'},
+  {code:'T8RE-1WQA-6ZXC-9VBN',type:'robux100'},{code:'H5JK-3LPO-2IUY-7TRE',type:'robux100'},
+  {code:'G4HJ-8KLM-1NOP-9QRS',type:'robux100'},{code:'R2TY-6UIO-3PAS-8DFG',type:'robux100'},
+  {code:'C7VB-1NMJ-5KLP-9HGF',type:'robux100'},{code:'Y3UI-9OPL-4KJM-7NHG',type:'robux100'},
+  {code:'F8GH-2JKL-6POI-1TRE',type:'robux100'},{code:'D5SA-7QWE-3RTY-9UIO',type:'robux100'},
+  {code:'B9NM-4VCX-1ZAS-6DFG',type:'robux100'},{code:'K2LP-8QWE-5RTY-3UIO',type:'robux100'},
+  {code:'W7ER-1TYU-9IOP-4ASD',type:'robux100'},{code:'E3RT-6YUI-2OPL-8KJM',type:'robux100'},
+  {code:'O9PL-5KJM-7NHG-1BVC',type:'robux100'},{code:'I4OP-8KJM-3NHG-6BVC',type:'robux100'},
+  {code:'A2SD-7FGH-9JKL-1QWE',type:'robux100'},{code:'Z6XC-3VBN-8MAS-5DFG',type:'robux100'},
+  {code:'L1KJ-9HGF-2DSA-7QWE',type:'robux100'},
+  // Minecraft Redeem Code
+  {code:'P5OI-4UYT-8REW-3QAS',type:'minecraft_code'},{code:'M8NB-2VCX-6ZAS-9DFG',type:'minecraft_code'},
+  {code:'Q7WE-1RTY-3UIO-5PAS',type:'minecraft_code'},{code:'S4DF-9GHJ-2KLP-8QWE',type:'minecraft_code'},
+  {code:'T2RE-6WQA-7ZXC-1VBN',type:'minecraft_code'},{code:'H9JK-3LPO-5IUY-4TRE',type:'minecraft_code'},
+  {code:'G6HJ-8KLM-2NOP-1QRS',type:'minecraft_code'},{code:'R3TY-7UIO-9PAS-6DFG',type:'minecraft_code'},
+  {code:'C1VB-5NMJ-8KLP-2HGF',type:'minecraft_code'},{code:'Y7UI-4OPL-6KJM-9NHG',type:'minecraft_code'},
+  {code:'F3GH-1JKL-5POI-8TRE',type:'minecraft_code'},{code:'D8SA-2QWE-7RTY-4UIO',type:'minecraft_code'},
+  {code:'B6NM-9VCX-3ZAS-1DFG',type:'minecraft_code'},{code:'K5LP-2QWE-8RTY-7UIO',type:'minecraft_code'},
+  {code:'W1ER-6TYU-4IOP-9ASD',type:'minecraft_code'},{code:'E7RT-3YUI-5OPL-2KJM',type:'minecraft_code'},
+  {code:'O8PL-1KJM-9NHG-6BVC',type:'minecraft_code'},{code:'I2OP-7KJM-4NHG-3BVC',type:'minecraft_code'},
+  {code:'A9SD-6FGH-1JKL-5QWE',type:'minecraft_code'},{code:'Z3XC-8VBN-2MAS-7DFG',type:'minecraft_code'},
+  {code:'L4KJ-1HGF-6DSA-9QWE',type:'minecraft_code'},{code:'P7OI-5UYT-3REW-2QAS',type:'minecraft_code'},
+  {code:'M1NB-9VCX-4ZAS-8DFG',type:'minecraft_code'},{code:'Q8WE-2RTY-6UIO-1PAS',type:'minecraft_code'},
+  {code:'S5DF-7GHJ-9KLP-3QWE',type:'minecraft_code'},
+  // Minecraft Permanent Account
+  {code:'T3RE-8WQA-2ZXC-6VBN',type:'minecraft_account'},{code:'H1JK-4LPO-7IUY-9TRE',type:'minecraft_account'},
+  {code:'G9HJ-2KLM-5NOP-8QRS',type:'minecraft_account'},{code:'R6TY-1UIO-4PAS-7DFG',type:'minecraft_account'},
+  {code:'C2VB-8NMJ-6KLP-3HGF',type:'minecraft_account'},{code:'Y5UI-7OPL-2KJM-1NHG',type:'minecraft_account'},
+  {code:'F1GH-9JKL-8POI-6TRE',type:'minecraft_account'},{code:'D3SA-5QWE-1RTY-2UIO',type:'minecraft_account'},
+  {code:'B8NM-7VCX-6ZAS-4DFG',type:'minecraft_account'},{code:'K9LP-3QWE-7RTY-2UIO',type:'minecraft_account'},
+  {code:'W4ER-8TYU-1IOP-6ASD',type:'minecraft_account'},{code:'E1RT-9YUI-2OPL-5KJM',type:'minecraft_account'},
+  {code:'O6PL-3KJM-8NHG-7BVC',type:'minecraft_account'},{code:'I5OP-2KJM-9NHG-4BVC',type:'minecraft_account'},
+  {code:'A8SD-1FGH-3JKL-7QWE',type:'minecraft_account'},{code:'Z5XC-6VBN-9MAS-2DFG',type:'minecraft_account'},
+  {code:'L2KJ-8HGF-4DSA-1QWE',type:'minecraft_account'},{code:'P9OI-3UYT-7REW-5QAS',type:'minecraft_account'},
+  {code:'M4NB-6VCX-2ZAS-3DFG',type:'minecraft_account'},{code:'Q3WE-5RTY-8UIO-9PAS',type:'minecraft_account'},
+  {code:'S1DF-4GHJ-6KLP-2QWE',type:'minecraft_account'},{code:'T9RE-7WQA-5ZXC-3VBN',type:'minecraft_account'},
+  {code:'H6JK-2LPO-1IUY-8TRE',type:'minecraft_account'},{code:'G2HJ-9KLM-7NOP-4QRS',type:'minecraft_account'},
+  {code:'R8TY-5UIO-2PAS-1DFG',type:'minecraft_account'},
+];
+
+async function bootLoad() {
+  showGlobalLoader(true);
+  _cache.users        = await storageGet('rv_users', {}, true);
+  _cache.codes        = await storageGet('rv_codes', [], true);
+  _cache.redemptions  = await storageGet('rv_redemptions', [], true);
+
+  // Seed default codes if not already present
+  let dirty = false;
+  const existingCodes = new Set(_cache.codes.map(c => c.code));
+  for (const entry of SEED_CODES) {
+    if (!existingCodes.has(entry.code)) {
+      _cache.codes.push({ code: entry.code, type: entry.type, addedAt: '2026-01-01T00:00:00.000Z' });
+      dirty = true;
+    }
+  }
+  if (dirty) await storageSet('rv_codes', _cache.codes, true);
+
+  showGlobalLoader(false);
+  updateNav();
+  updateRedeemPage();
+}
+
+function showGlobalLoader(on) {
+  let el = document.getElementById('globalLoader');
+  if (!el) return;
+  el.style.display = on ? 'flex' : 'none';
+}
+
+// ─── UI UTILS ────────────────────────────────────────────────────────────────
+
+async function showPage(id) {
+  const current = document.querySelector('.page.active');
+  const next = document.getElementById('page-' + id);
+  if (!next || current === next) return;
+
+  // Fade out current page
+  if (current) {
+    current.classList.remove('page-visible');
+    await new Promise(r => setTimeout(r, 200));
+    current.classList.remove('active');
+  }
+
+  // Show and animate in new page
+  next.classList.add('active');
+  // Force reflow so transition triggers
+  next.getBoundingClientRect();
+  next.classList.add('page-visible');
+
+  // Nav active state
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const links = {home:0, redeem:1, orders:2, support:3};
+  if (links[id] !== undefined) document.querySelectorAll('.nav-link')[links[id]].classList.add('active');
+
+  if (id === 'redeem') updateRedeemPage();
+  if (id === 'orders') await updateOrdersPage();
+  if (id === 'admin' && isAdmin()) await updateAdminPage();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function switchModal(closeId, openId) {
+  closeModal(closeId);
+  setTimeout(() => openModal(openId), 100);
+}
+
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.className = 'alert '+type+' show';
+  el.textContent = msg;
+}
+function hideAlert(id) {
+  const el = document.getElementById(id);
+  el.className = 'alert';
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast '+type+' show';
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+function toggleFaq(el) {
+  el.parentElement.classList.toggle('open');
+}
+
+async function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('admin-'+tab).classList.add('active');
+  if (tab === 'redemptions') await renderAdminRedemptions();
+  if (tab === 'users') await renderAdminUsers();
+  if (tab === 'codes') await renderAdminCodes();
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+
+function isAdmin() { return currentUser && currentUser.email === ADMIN_EMAIL; }
+
+function updateNav() {
+  const loginBtn = document.getElementById('loginNavBtn');
+  const logoutBtn = document.getElementById('logoutNavBtn');
+  const adminLink = document.getElementById('adminNavLink');
+  if (currentUser) {
+    loginBtn.style.display = 'none';
+    logoutBtn.style.display = 'inline-flex';
+    logoutBtn.textContent = currentUser.email.split('@')[0];
+    if (isAdmin()) adminLink.style.display = 'inline-block';
+    else adminLink.style.display = 'none';
+  } else {
+    loginBtn.style.display = 'inline-flex';
+    logoutBtn.style.display = 'none';
+    adminLink.style.display = 'none';
+  }
+  const redemptions = _cache.redemptions || [];
+  document.getElementById('statRedeemed').textContent = redemptions.length;
+}
+
+async function doLogin() {
+  hideAlert('loginAlert');
+  const btn = document.querySelector('#loginModal .btn-full');
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPassword').value;
+  if (!email || !pass) { showAlert('loginAlert','Please fill in all fields.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Signing in\u2026';
+  _cache.users = null;
+  const users = await getUsers();
+  btn.disabled = false; btn.textContent = 'Sign In \u2192';
+
+  if (!users[email]) { showAlert('loginAlert','No account found with this email.','error'); return; }
+  if (users[email].password !== btoa(pass)) { showAlert('loginAlert','Incorrect password.','error'); return; }
+
+  _cache.codes = null; _cache.redemptions = null;
+  await getCodes(); await getRedemptions();
+
+  currentUser = { email };
+  setSession(currentUser);
+  closeModal('loginModal');
+  updateNav();
+  showToast('Welcome back, ' + email.split('@')[0] + '!');
+  updateRedeemPage();
+  updateOrdersPage();
+}
+
+// ─── EMAIL VALIDATION ────────────────────────────────────────────────────────
+
+function isValidEmailFormat(email) {
+  // RFC-compliant basic format check
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+const DISPOSABLE_DOMAINS = new Set([
+  'mailinator.com','guerrillamail.com','tempmail.com','throwaway.email',
+  'yopmail.com','sharklasers.com','guerrillamailblock.com','grr.la',
+  'guerrillamail.info','guerrillamail.biz','guerrillamail.de','guerrillamail.net',
+  'guerrillamail.org','spam4.me','trashmail.com','trashmail.me','trashmail.net',
+  'trashmail.at','trashmail.io','trashmail.xyz','dispostable.com','maildrop.cc',
+  'fakeinbox.com','mailnull.com','spamgourmet.com','trashmail.fr','getairmail.com',
+  'filzmail.com','spamherein.com','discard.email','spambox.us','spamex.com',
+  'mailexpire.com','anonaddy.com','simplelogin.io','33mail.com','spamgourmet.net',
+  'spamgourmet.org','tempr.email','discard.email','incognitomail.com','mailtemp.info',
+  'burnermail.io','dropmail.me','easytrashmail.com','fakemailgenerator.com',
+  'nwytg.net','spamwc.de','trbvr.com','yomail.info','0-mail.com','0815.ru',
+  'spambox.info','tempinbox.com','tempomail.fr','throwam.com'
+]);
+
+async function validateEmail(email) {
+  // Step 1: format check
+  if (!isValidEmailFormat(email)) {
+    return { valid: false, reason: 'Invalid email format. Please check for typos.' };
+  }
+
+  // Step 2: disposable domain check
+  const domain = email.split('@')[1].toLowerCase();
+  if (DISPOSABLE_DOMAINS.has(domain)) {
+    return { valid: false, reason: 'Disposable/temporary emails are not allowed. Please use a real email address.' };
+  }
+
+  // Step 3: known fake TLDs / obviously invalid
+  const tld = domain.split('.').pop();
+  if (['test','invalid','example','localhost','local'].includes(tld)) {
+    return { valid: false, reason: 'This email domain is not valid.' };
+  }
+
+  // Step 4: MX record check via public DNS-over-HTTPS (no API key needed)
+  try {
+    const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`);
+    const data = await res.json();
+    // Status 0 = NOERROR, and we need at least one MX answer
+    if (data.Status !== 0 || !data.Answer || data.Answer.length === 0) {
+      return { valid: false, reason: `The email domain "@${domain}" doesn't appear to exist or accept emails.` };
+    }
+  } catch {
+    // If DNS check fails (network issue), allow through with a warning
+    console.warn('DNS check failed, skipping');
+  }
+
+  return { valid: true };
+}
+
+async function doRegister() {
+  hideAlert('registerAlert');
+  const btn = document.querySelector('#registerModal .btn-full');
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('regPassword').value;
+  const pass2 = document.getElementById('regPassword2').value;
+  if (!email || !pass || !pass2) { showAlert('registerAlert','Please fill in all fields.','error'); return; }
+  if (pass.length < 6) { showAlert('registerAlert','Password must be at least 6 characters.','error'); return; }
+  if (pass !== pass2) { showAlert('registerAlert','Passwords do not match.','error'); return; }
+
+  // Validate email
+  btn.disabled = true; btn.textContent = 'Verifying email\u2026';
+  showAlert('registerAlert', '\u23f3 Checking email validity\u2026', 'info');
+  const emailCheck = await validateEmail(email);
+  if (!emailCheck.valid) {
+    btn.disabled = false; btn.textContent = 'Create Account \u2192';
+    showAlert('registerAlert', emailCheck.reason, 'error');
+    return;
+  }
+
+  btn.textContent = 'Creating\u2026';
+  _cache.users = null;
+  const users = await getUsers();
+  btn.disabled = false; btn.textContent = 'Create Account \u2192';
+
+  if (users[email]) { showAlert('registerAlert','An account with this email already exists.','error'); return; }
+
+  users[email] = { password: btoa(pass), joined: new Date().toISOString() };
+  await setUsers(users);
+
+  currentUser = { email };
+  setSession(currentUser);
+  closeModal('registerModal');
+  updateNav();
+  showToast('Account created! Welcome to ThunderBolt.');
+  updateRedeemPage();
+  updateOrdersPage();
+}
+
+function logout() {
+  currentUser = null;
+  setSession(null);
+  updateNav();
+  showPage('home');
+  showToast('Signed out.');
+}
+
+// ─── REDEEM ───────────────────────────────────────────────────────────────────
+
+function updateRedeemPage() {
+  const gate = document.getElementById('redeemLoginGate');
+  const form = document.getElementById('redeemFormSection');
+  if (currentUser) {
+    gate.style.display = 'none';
+    form.style.display = 'block';
+    document.getElementById('redeemEmail').value = currentUser.email;
+  } else {
+    gate.style.display = 'block';
+    form.style.display = 'none';
+  }
+}
+
+const PRODUCT_NAMES = {
+  robux50: '$50 Robux Gift Card',
+  robux100: '$100 Robux Gift Card',
+  minecraft_code: 'Minecraft Redeem Code',
+  minecraft_account: 'Minecraft Permanent Account'
+};
+const PRODUCT_ICONS = {
+  robux50: '💎', robux100: '👑', minecraft_code: '⛏️', minecraft_account: '🏆'
+};
+const PRODUCT_ICON_CLASSES = {
+  robux50: 'green', robux100: 'gold', minecraft_code: 'purple', minecraft_account: 'red'
+};
+
+async function submitRedeem() {
+  hideAlert('redeemAlert');
+  if (!currentUser) { showAlert('redeemAlert','Please sign in first.','error'); return; }
+  const code = document.getElementById('redeemCode').value.trim().toUpperCase();
+  if (!code) { showAlert('redeemAlert','Please enter a redemption code.','error'); return; }
+
+  const btn = document.querySelector('#redeemFormSection .btn-full');
+  btn.disabled = true; btn.textContent = 'Submitting\u2026';
+
+  const codes = await getCodes();
+  const found = codes.find(c => c.code.toUpperCase() === code);
+  if (!found) {
+    showAlert('redeemAlert','Code not found. Please check and try again.','error');
+    btn.disabled=false; btn.textContent='\u2197 Submit Redemption'; return;
+  }
+
+  const redemptions = await getRedemptions();
+  const COOLDOWN = 1 * 60 * 60 * 1000; // 1 hour
+  const now = Date.now();
+
+  // Rule 1: This user has EVER redeemed this code → permanently blocked
+  const userEverRedeemed = redemptions.find(
+    r => r.code.toUpperCase() === code && r.userEmail === currentUser.email
+  );
+  if (userEverRedeemed) {
+    showAlert('redeemAlert', 'You have already redeemed this code. Each code can only be used once per account.', 'error');
+    btn.disabled=false; btn.textContent='\u2197 Submit Redemption'; return;
+  }
+
+  // Rule 2: Someone else redeemed this code within the last 80 hours → locked for now
+  const recentByOther = redemptions.find(
+    r => r.code.toUpperCase() === code &&
+         r.userEmail !== currentUser.email &&
+         (now - new Date(r.submittedAt).getTime()) < COOLDOWN
+  );
+  if (recentByOther) {
+    const msLeft = COOLDOWN - (now - new Date(recentByOther.submittedAt).getTime());
+    const hrsLeft = Math.ceil(msLeft / (60 * 60 * 1000));
+    showAlert('redeemAlert',
+      `This code was recently redeemed by another user. It will be available again in ~${Math.ceil(msLeft/60000)} minute${Math.ceil(msLeft/60000)!==1?"s":""}.`,
+      'info');
+    btn.disabled=false; btn.textContent='\u2197 Submit Redemption'; return;
+  }
+
+  const newRedemption = {
+    id: 'RV' + Date.now(),
+    userEmail: currentUser.email,
+    code: code,
+    product: found.type,
+    submittedAt: new Date().toISOString(),
+    status: 'pending'
+  };
+  redemptions.push(newRedemption);
+  await setRedemptions(redemptions);
+
+  btn.disabled = false; btn.textContent = '\u2197 Submit Redemption';
+  document.getElementById('redeemCode').value = '';
+  showAlert('redeemAlert', '\u2713 Code submitted successfully! You will receive your gift at ' + currentUser.email + ' within 80 hours.', 'success');
+  document.getElementById('statRedeemed').textContent = redemptions.length;
+  showToast('Redemption submitted!');
+}
+
+// ─── ORDERS ───────────────────────────────────────────────────────────────────
+
+async function updateOrdersPage() {
+  const gate = document.getElementById('ordersLoginGate');
+  const section = document.getElementById('ordersSection');
+  if (currentUser) {
+    gate.style.display = 'none';
+    section.style.display = 'block';
+    await renderOrders();
+  } else {
+    gate.style.display = 'block';
+    section.style.display = 'none';
+  }
+}
+
+async function renderOrders() {
+  const container = document.getElementById('ordersList');
+  const allRedemptions = await getRedemptions();
+  const redemptions = allRedemptions.filter(r => r.userEmail === currentUser.email);
+  if (!redemptions.length) {
+    container.innerHTML = '<div class="empty-state" style="padding:3rem;background:var(--card);border:1px solid var(--border);border-radius:14px;"><div style="font-size:2rem;margin-bottom:0.5rem;">📭</div><p>No redemptions yet.</p></div>';
+    return;
+  }
+  container.innerHTML = redemptions.slice().reverse().map(r => `
+    <div class="order-card">
+      <div class="product-icon ${PRODUCT_ICON_CLASSES[r.product] || 'purple'} order-icon">${PRODUCT_ICONS[r.product] || '🎁'}</div>
+      <div class="order-info">
+        <h4>${PRODUCT_NAMES[r.product] || r.product}</h4>
+        <p>Code: ${r.code} · ID: ${r.id}</p>
+        <p style="margin-top:2px;">${new Date(r.submittedAt).toLocaleString()}</p>
+      </div>
+      <span class="order-status ${r.status === 'activated' ? 'status-active' : 'status-pending'}">${r.status === 'activated' ? '✓ Activated' : '⏳ Pending'}</span>
+    </div>
+  `).join('');
+}
+
+// ─── ADMIN ────────────────────────────────────────────────────────────────────
+
+async function updateAdminPage() {
+  await renderAdminCodes();
+}
+
+async function adminAddCode() {
+  const val = document.getElementById('newCodeVal').value.trim().toUpperCase();
+  const type = document.getElementById('newCodeType').value;
+  if (!val || !type) { showToast('Please enter a code and select a type.', 'error'); return; }
+
+  const btn = document.querySelector('.add-code-form .btn-primary');
+  btn.disabled = true; btn.textContent = 'Saving\u2026';
+  const codes = await getCodes();
+  codes.push({ code: val, type, addedAt: new Date().toISOString() });
+  await setCodes(codes);
+  btn.disabled = false; btn.textContent = '+ Add Code';
+  document.getElementById('newCodeVal').value = '';
+  document.getElementById('newCodeType').value = '';
+  await renderAdminCodes();
+  showToast('Code added!');
+}
+
+async function adminDeleteCode(code) {
+  const codes = (await getCodes()).filter(c => c.code !== code);
+  await setCodes(codes);
+  await renderAdminCodes();
+  showToast('Code deleted.');
+}
+
+async function renderAdminCodes() {
+  const codes = await getCodes();
+  const tbody = document.getElementById('adminCodesTable');
+  if (!codes.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No codes added yet.</td></tr>'; return; }
+  tbody.innerHTML = codes.map(c => `
+    <tr>
+      <td class="code-val">${c.code}</td>
+      <td>${PRODUCT_NAMES[c.type] || c.type}</td>
+      <td><span class="product-tag tag-green" style="font-size:0.65rem;">Active</span></td>
+      <td><button class="delete-btn" onclick="adminDeleteCode('${c.code}')">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+async function adminActivateRedemption(id) {
+  const redemptions = await getRedemptions();
+  const r = redemptions.find(x => x.id === id);
+  if (r) r.status = 'activated';
+  await setRedemptions(redemptions);
+  await renderAdminRedemptions();
+  if (currentUser && currentUser.email !== ADMIN_EMAIL) await renderOrders();
+  showToast('Redemption marked as activated!');
+}
+
+async function renderAdminRedemptions() {
+  const redemptions = await getRedemptions();
+  const tbody = document.getElementById('adminRedemptionsTable');
+  if (!redemptions.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No redemptions yet.</td></tr>'; return; }
+  tbody.innerHTML = redemptions.slice().reverse().map(r => `
+    <tr>
+      <td>${r.userEmail}</td>
+      <td class="code-val">${r.code}</td>
+      <td>${PRODUCT_NAMES[r.product] || r.product}</td>
+      <td>${new Date(r.submittedAt).toLocaleDateString()}</td>
+      <td><span class="order-status ${r.status==='activated'?'status-active':'status-pending'}" style="font-size:0.68rem;">${r.status==='activated'?'Activated':'Pending'}</span></td>
+      <td>${r.status==='pending'?`<button class="activate-btn" onclick="adminActivateRedemption('${r.id}')">Activate</button>`:'—'}</td>
+    </tr>
+  `).join('');
+}
+
+async function renderAdminUsers() {
+  const users = await getUsers();
+  const redemptions = await getRedemptions();
+  const tbody = document.getElementById('adminUsersTable');
+  const emails = Object.keys(users);
+  if (!emails.length) { tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No users yet.</td></tr>'; return; }
+  tbody.innerHTML = emails.map(email => `
+    <tr>
+      <td>${email}</td>
+      <td>${new Date(users[email].joined).toLocaleDateString()}</td>
+      <td>${redemptions.filter(r=>r.userEmail===email).length}</td>
+    </tr>
+  `).join('');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+});
+
+bootLoad().then(() => {
+  // Make initial page visible after boot
+  const activePage = document.querySelector('.page.active');
+  if (activePage) {
+    activePage.getBoundingClientRect();
+    activePage.classList.add('page-visible');
+  }
+});
+</script>
+
+
+
+
+</body>
+</html>
